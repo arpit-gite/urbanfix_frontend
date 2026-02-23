@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { sendChat } from "../../services/api";
 
 export default function ChatPanel() {
@@ -7,16 +8,22 @@ export default function ChatPanel() {
 
   const handleSend = async () => {
     if (!message) return;
-
-    const res = await sendChat(message);
-
-    setChat(prev => [
-      ...prev,
-      { role: "user", text: message },
-      { role: "ai", text: res.reply }
-    ]);
-
-    setMessage("");
+    try {
+      const res = await sendChat(message);
+      setChat(prev => [
+        ...prev,
+        { role: "user", text: message },
+        { role: "ai", text: res.data.reply }
+      ]);
+      setMessage("");
+    } catch (error) {
+      setMessage("");
+      const apiMessage =
+        error.response?.data?.message ||
+        "AI service unavailable";
+      toast.error(apiMessage);
+      return;
+    }
   };
 
   return (

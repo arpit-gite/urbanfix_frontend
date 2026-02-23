@@ -21,7 +21,7 @@ export const saveWorkflow = async (agents) => {
 
 export const sendChat = async (message) => {
   const res = await api.post("/api/chat", { message });
-  return res.data;
+  return res;
 };
 
 export default api;

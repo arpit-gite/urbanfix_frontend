@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { DndContext } from "@dnd-kit/core";
+import { Toaster } from "react-hot-toast";
 import AgentMenu from "./components/AgentMenu/AgentMenu";
 import Workspace from "./components/Workspace/Workspace";
 import ChatPanel from "./components/ChatPanel/ChatPanel";
@@ -36,6 +37,7 @@ function App() {
         <AgentMenu />
         <Workspace />
         <ChatPanel />
+        <Toaster position="top-right" reverseOrder={false} />
       </div>
     </DndContext>
   );
