@@ -14,7 +14,7 @@ export default function ChatPanel() {
 
     setLoading(true);
 
-    // Immediately show user message
+    // Show user message immediately
     setChat(prev => [
       ...prev,
       { role: "user", text: userMessage }
@@ -41,18 +41,50 @@ export default function ChatPanel() {
   };
 
   return (
-    <div style={{ width: "30%", borderLeft: "1px solid #ddd", padding: 20 }}>
+    <div style={{ width: "30%", borderLeft: "1px solid #ddd", padding: 20, display: "flex", flexDirection: "column" }}>
       <h3>Chat</h3>
 
-      <div style={{ height: "70%", overflowY: "auto", marginBottom: 10 }}>
+      <div
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          marginBottom: 10,
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
         {chat.map((c, i) => (
-          <div key={i} style={{ marginBottom: 8 }}>
-            <strong>{c.role === "user" ? "You" : "AI"}:</strong> {c.text}
+          <div
+            key={i}
+            style={{
+              background: c.role === "user" ? "#e3f2fd" : "#f5f5f5",
+              padding: 12,
+              borderRadius: 8,
+              marginBottom: 10,
+              alignSelf: c.role === "user" ? "flex-end" : "flex-start",
+              maxWidth: "100%"
+            }}
+          >
+            <div
+              style={{
+                whiteSpace: "pre-wrap",   // 👈 preserves line breaks
+                lineHeight: 1.6,
+                fontSize: 14
+              }}
+            >
+              {c.text}
+            </div>
           </div>
         ))}
 
         {loading && (
-          <div style={{ fontStyle: "italic", color: "gray" }}>
+          <div
+            style={{
+              fontStyle: "italic",
+              color: "gray",
+              marginBottom: 10
+            }}
+          >
             AI is thinking...
           </div>
         )}
@@ -61,12 +93,24 @@ export default function ChatPanel() {
       <input
         value={message}
         onChange={e => setMessage(e.target.value)}
-        style={{ width: "100%", marginBottom: 10 }}
+        style={{ width: "100%", marginBottom: 10, padding: 8 }}
         disabled={loading}
         onKeyDown={(e) => e.key === "Enter" && handleSend()}
+        placeholder="Type your message..."
       />
 
-      <button onClick={handleSend} disabled={loading}>
+      <button
+        onClick={handleSend}
+        disabled={loading}
+        style={{
+          padding: 10,
+          backgroundColor: loading ? "#ccc" : "#1976d2",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          cursor: loading ? "not-allowed" : "pointer"
+        }}
+      >
         {loading ? "Sending..." : "Send"}
       </button>
     </div>
