@@ -3,7 +3,7 @@ import { useWorkflowStore } from "../../store/workflow.store";
 import "./AgentMenu.css";
 
 const DraggableAgent = ({ agent }) => {
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+  const { attributes, listeners, setNodeRef } = useDraggable({
     id: agent._id
   });
 
@@ -12,33 +12,33 @@ const DraggableAgent = ({ agent }) => {
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      className={`agent-menu-item ${isDragging ? "dragging" : ""}`}
+      className="agent-menu-item"
     >
-      <div className="agent-menu-item-content">
-        <span className="agent-menu-name">{agent.name}</span>
-        <span className="agent-menu-type">{agent.type}</span>
-      </div>
+      {agent.name}
     </div>
   );
 };
 
 export default function AgentMenu() {
-  const availableAgents = useWorkflowStore(s => s.availableAgents);
+  const availableAgents = useWorkflowStore(
+    s => s.availableAgents
+  );
 
   return (
-    <div className="agent-menu">
-      <div className="agent-menu-header">
-        <h3>Agents</h3>
-        <p className="agent-menu-subtitle">
-          Drag agents into workspace
-        </p>
-      </div>
-
-      <div className="agent-menu-list">
-        {availableAgents.map(agent => (
-          <DraggableAgent key={agent._id} agent={agent} />
-        ))}
-      </div>
+    <div
+      className="agent-menu"
+      style={{
+        width: "20%",
+        borderRight: "1px solid #ddd",
+        padding: 10,
+        overflowY: "auto"
+      }}
+    >
+      <h3>Agents</h3>
+      <p className="agent-menu-subtitle">Drag agents into workspace</p>
+      {availableAgents.map(agent => (
+        <DraggableAgent key={agent._id} agent={agent} />
+      ))}
     </div>
   );
 }

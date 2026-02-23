@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
+import { DndContext, PointerSensor, useSensor, useSensors, pointerWithin } from "@dnd-kit/core";
 import { Toaster } from "react-hot-toast";
 import AgentMenu from "./components/AgentMenu/AgentMenu";
 import Workspace from "./components/Workspace/Workspace";
@@ -12,26 +12,13 @@ function App() {
   const addAgent = useWorkflowStore(s => s.addAgent);
   const persist = useWorkflowStore(s => s.persist);
 
-  const mouseSensor = useSensor(MouseSensor, {
+  const pointerSensor = useSensor(PointerSensor, {
     activationConstraint: {
-      distance: 5, // prevents accidental drag on click
+      distance: 8,
     },
   });
 
-  const touchSensor = useSensor(TouchSensor, {
-    activationConstraint: {
-      delay: 150,      // press 150ms before drag
-      tolerance: 5,
-    },
-  });
-
-  const pointerSensor = useSensor(PointerSensor);
-
-  const sensors = useSensors(
-    mouseSensor,
-    touchSensor,
-    pointerSensor
-  );
+  const sensors = useSensors(pointerSensor);
 
   useEffect(() => {
     loadWorkflow();
@@ -40,20 +27,21 @@ function App() {
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-
-    if (over?.id === "workspace") {
-      const availableAgents = useWorkflowStore.getState().availableAgents;
-      const selected = availableAgents.find(a => a._id === active.id);
-
-      if (selected) {
-        addAgent(selected);
-        persist();
-      }
+    if (!over || over.id !== "workspace") {
+      return;
     }
+
+    const availableAgents = useWorkflowStore.getState().availableAgents;
+    const selected = availableAgents.find(a => a._id === active.id);
+
+    if (!selected) return;
+
+    addAgent(selected);
+    persist();
   };
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+    <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragEnd={handleDragEnd} >
       <div style={{ display: "flex", height: "100vh" }}>
         <AgentMenu />
         <Workspace />

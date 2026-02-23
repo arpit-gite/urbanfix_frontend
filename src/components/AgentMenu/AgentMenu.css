@@ -76,3 +76,19 @@
   font-size: 11px;
   color: #888;
 }
+.agent-menu-item {
+  padding: 12px;
+  margin: 10px 0;
+  background: #f4f4f4;
+  border-radius: 8px;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.agent-menu-item:active {
+  cursor: grabbing;
+  background: #e0e0e0;
+}
