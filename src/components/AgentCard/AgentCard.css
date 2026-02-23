@@ -1,0 +1,64 @@
+.agent-card {
+  background: #ffffff;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.agent-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.agent-field {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.agent-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.agent-input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.agent-input:focus {
+  outline: none;
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
+}
+
+.agent-type {
+  font-size: 13px;
+  color: #555;
+  background: #f9fafb;
+  padding: 6px 8px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.agent-delete-btn {
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.agent-delete-btn:hover {
+  background: #d9363e;
+}

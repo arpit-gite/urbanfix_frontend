@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
 import { Toaster } from "react-hot-toast";
 import AgentMenu from "./components/AgentMenu/AgentMenu";
 import Workspace from "./components/Workspace/Workspace";
@@ -11,6 +11,27 @@ function App() {
   const loadAgents = useWorkflowStore(s => s.loadAgents);
   const addAgent = useWorkflowStore(s => s.addAgent);
   const persist = useWorkflowStore(s => s.persist);
+
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 5, // prevents accidental drag on click
+    },
+  });
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 150,      // press 150ms before drag
+      tolerance: 5,
+    },
+  });
+
+  const pointerSensor = useSensor(PointerSensor);
+
+  const sensors = useSensors(
+    mouseSensor,
+    touchSensor,
+    pointerSensor
+  );
 
   useEffect(() => {
     loadWorkflow();
@@ -32,7 +53,7 @@ function App() {
   };
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div style={{ display: "flex", height: "100vh" }}>
         <AgentMenu />
         <Workspace />

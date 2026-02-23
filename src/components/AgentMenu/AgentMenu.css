@@ -1,0 +1,78 @@
+/* Sidebar container */
+.agent-menu {
+  width: 20%;
+  min-width: 220px;
+  border-right: 1px solid #eaeaea;
+  background: #ffffff;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.agent-menu-header {
+  margin-bottom: 16px;
+}
+
+.agent-menu-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.agent-menu-subtitle {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* List */
+.agent-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Draggable item */
+.agent-menu-item {
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.agent-menu-item:hover {
+  background: #eef4ff;
+  border-color: #d6e4ff;
+  transform: translateY(-2px);
+}
+
+.agent-menu-item:active {
+  cursor: grabbing;
+}
+
+/* Drag state */
+.agent-menu-item.dragging {
+  opacity: 0.6;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Content */
+.agent-menu-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.agent-menu-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.agent-menu-type {
+  font-size: 11px;
+  color: #888;
+}

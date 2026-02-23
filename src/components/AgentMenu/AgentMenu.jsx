@@ -1,8 +1,9 @@
 import { useDraggable } from "@dnd-kit/core";
 import { useWorkflowStore } from "../../store/workflow.store";
+import "./AgentMenu.css";
 
 const DraggableAgent = ({ agent }) => {
-  const { attributes, listeners, setNodeRef } = useDraggable({
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: agent._id
   });
 
@@ -11,15 +12,12 @@ const DraggableAgent = ({ agent }) => {
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      style={{
-        padding: 12,
-        margin: 10,
-        background: "#f4f4f4",
-        borderRadius: 6,
-        cursor: "grab"
-      }}
+      className={`agent-menu-item ${isDragging ? "dragging" : ""}`}
     >
-      {agent.name}
+      <div className="agent-menu-item-content">
+        <span className="agent-menu-name">{agent.name}</span>
+        <span className="agent-menu-type">{agent.type}</span>
+      </div>
     </div>
   );
 };
@@ -28,11 +26,19 @@ export default function AgentMenu() {
   const availableAgents = useWorkflowStore(s => s.availableAgents);
 
   return (
-    <div style={{ width: "20%", borderRight: "1px solid #ddd", padding: 10 }}>
-      <h3>Agents</h3>
-      {availableAgents.map(agent => (
-        <DraggableAgent key={agent._id} agent={agent} />
-      ))}
+    <div className="agent-menu">
+      <div className="agent-menu-header">
+        <h3>Agents</h3>
+        <p className="agent-menu-subtitle">
+          Drag agents into workspace
+        </p>
+      </div>
+
+      <div className="agent-menu-list">
+        {availableAgents.map(agent => (
+          <DraggableAgent key={agent._id} agent={agent} />
+        ))}
+      </div>
     </div>
   );
 }

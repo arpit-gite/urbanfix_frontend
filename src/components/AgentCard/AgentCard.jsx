@@ -1,35 +1,63 @@
+import { useEffect, useMemo, useState } from "react";
 import { useWorkflowStore } from "../../store/workflow.store";
+import "./AgentCard.css";
 
 export default function AgentCard({ agent }) {
   const removeAgent = useWorkflowStore(s => s.removeAgent);
   const updateAgentName = useWorkflowStore(s => s.updateAgentName);
   const persist = useWorkflowStore(s => s.persist);
 
-  return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        padding: 10,
-        margin: 10,
-        borderRadius: 6
-      }}
-    >
-      <input
-        value={agent.name}
-        onChange={(e) => {
-          updateAgentName(agent._id, e.target.value);
-          persist();
-        }}
-        style={{ width: "100%" }}
-      />
+  const [localName, setLocalName] = useState(agent.name);
 
-      <p>Type: {agent.type}</p>
+  // Debounce logic
+  const debouncedUpdate = useMemo(() => {
+    let timer;
+    return (value) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        updateAgentName(agent._id, value);
+        persist();
+      }, 500);
+    };
+  }, [agent._id, updateAgentName, persist]);
+
+  useEffect(() => {
+    setLocalName(agent.name);
+  }, [agent.name]);
+
+  const handleDelete = () => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete "${agent.name}"? This action cannot be undone.`
+    );
+
+    if (!confirmDelete) return;
+
+    removeAgent(agent._id);
+    persist();
+  };
+
+  return (
+    <div className="agent-card">
+      <div className="agent-field">
+        <label className="agent-label">Agent Name</label>
+        <input
+          className="agent-input"
+          value={localName}
+          onChange={(e) => {
+            const value = e.target.value;
+            setLocalName(value);
+            debouncedUpdate(value);
+          }}
+        />
+      </div>
+
+      <div className="agent-type">
+        <strong>Type:</strong> {agent.type}
+      </div>
 
       <button
-        onClick={() => {
-          removeAgent(agent._id);
-          persist();
-        }}
+        className="agent-delete-btn"
+        onClick={handleDelete}
       >
         Delete
       </button>
