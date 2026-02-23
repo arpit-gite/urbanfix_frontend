@@ -20,7 +20,7 @@ export default function Workspace() {
     >
       <h3>Workspace</h3>
       {agents.map(agent => (
-        <AgentCard key={agent.id} agent={agent} />
+        <AgentCard key={agent._id} agent={agent} />
       ))}
     </div>
   );
